@@ -24,10 +24,10 @@ jobs:
           ALLEGRO_CLIENT_ID: ${{ secrets.ALLEGRO_CLIENT_ID }}
           ALLEGRO_CLIENT_SECRET: ${{ secrets.ALLEGRO_CLIENT_SECRET }}
         run: python lego_tracker.py
-      - name: Zapisz Excel
+      - name: Zapisz pliki
         run: |
           git config user.name "LEGO Bot"
           git config user.email "bot@lego"
-          git add LEGO_Monitor.xlsx
+          git add lego_dane.csv LEGO_Monitor.xlsx
           git diff --staged --quiet || git commit -m "Dane ${{ github.run_id }}"
           git push
