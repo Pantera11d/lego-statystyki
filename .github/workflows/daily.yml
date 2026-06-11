@@ -1,0 +1,28 @@
+name: LEGO Monitor
+
+on:
+  schedule:
+    - cron: '0 7 * * *'
+  workflow_dispatch:
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install openpyxl
+      - name: Uruchom skrypt
+        env:
+          ALLEGRO_CLIENT_ID: ${{ secrets.ALLEGRO_CLIENT_ID }}
+          ALLEGRO_CLIENT_SECRET: ${{ secrets.ALLEGRO_CLIENT_SECRET }}
+        run: python lego_tracker.py
+      - name: Zapisz Excel
+        run: |
+          git config user.name "LEGO Bot"
+          git config user.email "bot@lego"
+          git add LEGO_Monitor.xlsx
+          git diff --staged --quiet || git commit -m "Dane ${{ github.run_id }}"
+          git push
