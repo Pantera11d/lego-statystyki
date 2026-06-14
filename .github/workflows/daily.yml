@@ -11,7 +11,6 @@ permissions:
 jobs:
   run:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v4
         with:
@@ -21,13 +20,15 @@ jobs:
         with:
           python-version: '3.12'
 
-      - run: pip install openpyxl
+      - run: pip install openpyxl pynacl
 
       - name: Uruchom skrypt
         env:
           ALLEGRO_CLIENT_ID: ${{ secrets.ALLEGRO_CLIENT_ID }}
           ALLEGRO_CLIENT_SECRET: ${{ secrets.ALLEGRO_CLIENT_SECRET }}
           ALLEGRO_REFRESH_TOKEN: ${{ secrets.ALLEGRO_REFRESH_TOKEN }}
+          GH_PAT: ${{ secrets.GH_PAT }}
+          GH_REPO: ${{ github.repository }}
         run: python lego_tracker.py
 
       - name: Zapisz pliki
